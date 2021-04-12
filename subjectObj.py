@@ -39,39 +39,19 @@ class SubjectObj:
             self.prepTitleBlock(courseBlockTitleParts)
 
             #Holds the abbreviation for the class
-            abb = courseBlockTitleParts[0].split('\xa0')[0]
+            abb = self.getGetAbb(courseBlockTitleParts)
 
             #Holds the number for the class
-            num = courseBlockTitleParts[0].split('\xa0')[1]
-
-
-            try:
-                num = num.replace("H","")
-                num = num.replace("L", "")
-                num = num.replace("B", "")
-                num = num.replace("A", "")
-                num = num.replace("C", "")
-                num = num.replace("I", "")
-                num = num.replace("P", "")
-
-            except:
-                print('Missing H/L Argument')
-
-            try:
-                num = int(num)
-            except:
-                num = 94
-                print('We got a problem aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
+            num = self.getNum(courseBlockTitleParts)
 
             #Holds the full title for the class
-            fullTitle = courseBlockTitleParts[1].strip()
+            fullTitle = self.getFullTitle(courseBlockTitleParts)
 
             #Holds the raw credits for the class
-            rawCreds = float(courseBlockTitleParts[-2].strip(string.ascii_letters).replace('-',''))
+            rawCreds = self.getRawCreds(courseBlockTitleParts)
 
             #Gets all of the course descriptions
             courseBlockDesc = cb.find('p',class_='courseblockdesc')
-            #print(courseBlockDesc.text.strip())
 
             #Holds the description of the class
             desc = courseBlockDesc.text.strip().replace('Grading status: Letter grade','')
@@ -103,8 +83,6 @@ class SubjectObj:
             courseBlockTitleParts.remove(courseBlockTitleParts[2])
             courseBlockTitleParts.remove(courseBlockTitleParts[2])
 
-        #halfCreditSubjects = ['BUSI', 'BBSP', 'AMST', 'BIOS', 'CBPH', 'CHEM', 'PLAN', 'COMP', 'CMPL', 'DRAM', 'ENVR', 'EPID']
-
         subjectsWithPeriodInTitle = ['ENGL', 'ARTH', 'GERM', 'HPM', 'HIST', 'INLS']
 
         #Handling of the classes with a period in the class title
@@ -121,3 +99,38 @@ class SubjectObj:
         if (len(courseBlockTitleParts) == 5):
             courseBlockTitleParts[0] = courseBlockTitleParts[0] + courseBlockTitleParts[1]
             courseBlockTitleParts.remove(courseBlockTitleParts[1])
+
+    #Returns the abbreviation of the subject
+    def getGetAbb(self,courseBlockTitleParts):
+        return courseBlockTitleParts[0].split('\xa0')[0]
+
+    #Returns the number of the class
+    def getNum(self,courseBlockTitleParts):
+        num = courseBlockTitleParts[0].split('\xa0')[1]
+        try:
+            num = num.replace("H", "")
+            num = num.replace("L", "")
+            num = num.replace("B", "")
+            num = num.replace("A", "")
+            num = num.replace("C", "")
+            num = num.replace("I", "")
+            num = num.replace("P", "")
+
+        except:
+            print('Missing H/L Argument')
+
+        try:
+            num = int(num)
+        except:
+            num = 0
+            print('Problem with num assignment')
+
+        return num
+
+    #Returns the full title of the class
+    def getFullTitle(self,courseBlockTitleParts):
+        return courseBlockTitleParts[1].strip()
+
+    #Returns the raw credits string of the class
+    def getRawCreds(self,courseBlockTitleParts):
+        return float(courseBlockTitleParts[-2].strip(string.ascii_letters).replace('-',''))
