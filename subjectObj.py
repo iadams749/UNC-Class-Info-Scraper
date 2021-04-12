@@ -44,6 +44,7 @@ class SubjectObj:
             #Holds the number for the class
             num = courseBlockTitleParts[0].split('\xa0')[1]
 
+
             try:
                 num = num.replace("H","")
                 num = num.replace("L", "")
