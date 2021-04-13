@@ -18,7 +18,7 @@ class SubjectObj:
     def __str__(self):
         return f'{self.name}({self.abbreviation}) {self.href}'
 
-    def getClasses(self):
+    def getClasses(self,csv_writer):
 
         #Opens the subject page and gets the soup from it
         newUrl = self.mainURL + self.href
@@ -54,7 +54,7 @@ class SubjectObj:
             courseBlockDesc = cb.find('p',class_='courseblockdesc')
 
             #Holds the description of the class
-            desc = courseBlockDesc.text.strip().replace('Grading status: Letter grade','')
+            rawDesc = self.getRawClassDesc(courseBlockDesc)
 
             #Creates the classObj for each class
             a = ClassObj()
@@ -62,7 +62,9 @@ class SubjectObj:
             a.setAbbreviation(abb)
             a.setNumber(num)
             a.setFullTitle(fullTitle)
-            print(a)
+            a.setDesc(rawDesc)
+            self.csvWrite(a,csv_writer)
+            #print(a)
 
 
     #Preps the courseblockTitleParts array and handles the various formats in the titles of the classes
@@ -134,3 +136,10 @@ class SubjectObj:
     #Returns the raw credits string of the class
     def getRawCreds(self,courseBlockTitleParts):
         return float(courseBlockTitleParts[-2].strip(string.ascii_letters).replace('-',''))
+
+    #Returns the class description
+    def getRawClassDesc(self,courseBlockDesc):
+        return courseBlockDesc.text.strip()
+
+    def csvWrite(self,a,csv_writer):
+        csv_writer.writerow([a.abb,a.number,a.fullTitle,a.rawCredits,a.minCredits,a.maxCredits,a.hasCreditRange,a.genEds,a.desc])

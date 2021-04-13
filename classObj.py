@@ -10,7 +10,6 @@ class ClassObj:
         self.maxCredits = 0.0
         self.hasCreditRange = False
         self.desc = 'This is a class'
-        self.reqisites = 'None'
         self.genEds = []
 
 
@@ -23,9 +22,10 @@ class ClassObj:
     def setAbbreviation(self,abb):
         self.abb = abb
 
-    #Sets the raw credits and checks if there
+    #Sets the raw credits and determines in the min and max credits
     def setRawCredits(self,num):
         self.rawCredits = num
+
         if(num/10.0 <= 1.0 and num % 0.5 == 0):
             self.hasCreditRange = False
             self.maxCredits = num
@@ -59,7 +59,33 @@ class ClassObj:
         self.hasCreditRange = True
 
     def setDesc(self,desc):
+
+        #Make sure all of the sentences are seperated and pretty
+        descParts = desc.split('.')
+        descParts.remove(descParts[-1])
+
+        desc = ''
+
+        for d in descParts:
+            desc = desc+(d.strip())+'. '
+
+        descParts2 = desc.split('eS')
+
+        if(len(descParts2) > 1):
+            desc = descParts2[0]+'e. S'+descParts2[1]
+
         self.desc = desc
+
+        descParts3 = desc.split('Gen Ed:')
+        if(len(descParts3) > 1):
+            parts = descParts3[1].split('.')
+            eds = parts[0]
+            edsList = eds.split(',')
+            for e in edsList:
+                self.genEds.append(e.strip())
+
+
+
 
     def setRequisites(self,req):
         self.reqisites = req
@@ -71,4 +97,4 @@ class ClassObj:
         self.hasCreditRange = bool
 
     def __str__(self):
-        return f'{self.abb} {self.number} {self.fullTitle} {self.minCredits} {self.maxCredits}'
+        return f'{self.abb} {self.number} {self.fullTitle} {self.minCredits} {self.maxCredits} \n {self.desc} \n {self.genEds}'
