@@ -1,7 +1,7 @@
 class ClassObj:
     def __init__(self):
         self.fullTitle = 'Class Full Title'
-        self.number = 1
+        self.number = '1'
         self.hasHonors = False
         self.isLab = True
         self.abb = 'AAAA'

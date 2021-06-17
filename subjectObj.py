@@ -67,6 +67,7 @@ class SubjectObj:
             #print(a)
 
 
+
     #Preps the courseblockTitleParts array and handles the various formats in the titles of the classes
     def prepTitleBlock(self,courseBlockTitleParts):
 
@@ -109,23 +110,24 @@ class SubjectObj:
     #Returns the number of the class
     def getNum(self,courseBlockTitleParts):
         num = courseBlockTitleParts[0].split('\xa0')[1]
-        try:
-            num = num.replace("H", "")
-            num = num.replace("L", "")
-            num = num.replace("B", "")
-            num = num.replace("A", "")
-            num = num.replace("C", "")
-            num = num.replace("I", "")
-            num = num.replace("P", "")
 
-        except:
-            print('Missing H/L Argument')
-
-        try:
-            num = int(num)
-        except:
-            num = 0
-            print('Problem with num assignment')
+        # try:
+        #     num = num.replace("H", "")
+        #     num = num.replace("L", "")
+        #     num = num.replace("B", "")
+        #     num = num.replace("A", "")
+        #     num = num.replace("C", "")
+        #     num = num.replace("I", "")
+        #     num = num.replace("P", "")
+        #
+        # except:
+        #     print('Missing H/L Argument')
+        #
+        # try:
+        #     num = int(num)
+        # except:
+        #     num = 0
+        #     print('Problem with num assignment')
 
         return num
 

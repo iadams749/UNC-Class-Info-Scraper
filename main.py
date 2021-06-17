@@ -17,15 +17,18 @@ csv_writer.writerow(['Full name','Abbreviation'])
 
 test = soup.find('div', id='atozindex')
 
-
-
 subjects = []
 
 #Creating the subjects and writing their name and abbreviation to an xml file
 for list in test.find_all('ul'):
     for line in list.find_all('li'):
-        subjects.append(SubjectObj(line.a.text.split('(')[0],line.a.text.split('(')[1].split(")")[0],f'{line.a.get("href").split("/")[2]}/'))
-        csv_writer.writerow([line.a.text,line.a.text.split('(')[1].split(")")[0]])
+        try:
+            subjects.append(SubjectObj(line.a.text.split('(')[0],line.a.text.split('(')[1].split(")")[0],f'{line.a.get("href").split("/")[2]}/'))
+            csv_writer.writerow([line.a.text,line.a.text.split('(')[1].split(")")[0]])
+
+        except:
+            subjects.append(SubjectObj('Vietnamese','VIET','viet/'))
+            csv_writer.writerow(['Vietnamese (VIET)','VIET'])
 
 csv_file.close()
 
